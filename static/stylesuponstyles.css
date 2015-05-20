@@ -1,0 +1,256 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+	 v2.0 | 20110126
+	 License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+* {
+	-webkit-box-sizing: border-box;
+		 -moz-box-sizing: border-box;
+					box-sizing: border-box;
+}
+
+body {
+	background-color: #222;
+	color: #eee;
+	font-family: "Lato",sans-serif;
+}
+
+a:link, a:active, a:visited {
+	color: #eee;
+}
+
+/* Awesome Form Labels inspired from: http://codepen.io/devtips/pen/bNBNBw */
+
+input, button, #emoji-list li {
+  background: none;
+  border: solid 2px #21a1e1;
+  display: inline-block;
+  font-size: 18px;
+  padding: 15px 40px;
+}
+
+button {
+	color: #21a1e1;
+	min-width: 230px;
+}
+
+input:focus, input:active, button:focus, button:active {
+  outline: none;
+}
+
+input[type="text"], input[type="email"] {
+	border: none;
+  border-bottom: solid 2px #21a1e1;
+}
+
+button:active {
+  background: #21a1e1;
+  color: #eee;
+}
+
+.input-wrapper {
+	padding-top: 30px;
+}
+
+.input-group {
+  display: inline-block;
+  margin-right: 20px;
+  position: relative;
+  width: 100%;
+}
+
+.input-group input {
+  color: #eee;
+  padding: 15px 10px;
+  width: 100%;
+}
+
+.input-group label {
+  font-size: 18px;
+  font-style: italic;
+  left: 10px;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.15s ease-out 0s;
+}
+
+.input-group input:focus + label, .input-group input.has-value + label {
+  font-size: 12px;
+  top: -10px;
+}
+
+#title {
+	font-size: 40px;
+	padding: 20px;
+	text-align: center;
+}
+
+.hidden {
+	display: none;
+}
+
+#loginz {
+	background-color: #233;
+	border-radius: 5px;
+	margin: 0 auto;
+	max-height: 9999px;
+	overflow: hidden;
+	padding: 20px;
+	text-align: center;
+	transition: all 0.8s;
+	width: 80%;
+}
+
+.loginz-collapse {
+	max-height: 0 !important;
+	padding-bottom: 0 !important;
+	padding-top: 0 !important;
+}
+
+#source {
+	background-color: #244;
+}
+
+#destination {
+	background-color: #255;
+}
+
+.login-bubble {
+	border-radius: 5px;
+	margin: 10px;
+	padding: 20px;
+}
+
+@media (min-width: 1000px) {
+	.login-bubble {
+		display: inline-block;
+		width: 45%;
+	}
+}
+
+#emoji-list {
+	background-color: #fff;
+	border-radius: 4px;
+	color: #111;
+	margin: 0 auto;
+	padding: 10px;
+	text-align: center;
+	width: 80%;
+}
+
+#emoji-list li {
+	display: inline-block;
+	height: 5em;
+	overflow: hidden;
+	padding: 15px 0;
+	position: relative;
+	width: 8em;
+}
+
+#emoji-list li.disabled {
+	filter: grayscale(100%);
+}
+
+#emoji-list .emoji-name {
+	background-color: #F7F7F9;
+	border-radius: 3px;
+	border: 1px solid #E1E1E8;
+	color: #C25;
+	font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+	font-size: 12px;
+	line-height: 12px;
+	padding: 1px 3px;
+}
+
+#emoji-list .transferred {
+	left: 35%;
+	position: absolute;
+	text-align: center;
+	top: 35%;
+	transform: rotateZ(340deg);
+}
+
+.emoji {
+	height: 2em;
+	width: 2em;
+}
+
+#emoji-background {
+	cursor: default;
+	height: 100vh;
+	left: 0;
+	opacity: 0.3;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	user-select: none;
+	width: 100vw;
+	z-index: -1;
+}
+
+#emoji-background .floater {
+	font-size: 120px;
+	left: -120px;
+	position: absolute;
+}
+
+#disclaimer {
+	background-color: #244;
+}
+
+.pulsate {
+	animation: pulsate .3s ease-in-out infinite alternate;
+	transform-origin: center;
+}
+
+@keyframes pulsate {
+	to { transform: scale(1.05); }
+}
+
+

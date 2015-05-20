@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+	<title>EmojiPorter</title>
+	<link rel="stylesheet" href="static/stylesuponstyles.css">
+	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+	<script src="static/prefixfree.min.js"></script>
+</head>
+<body>
+	<div id="title">Slack Emoji Porter 🍺</div>
+	<!-- Apologies if your browser/OS doesn't have emoji (unicode) support. -->
+
+	<div id="loginz">
+		<form id="source" class="login-bubble">
+			<h1>Source Account</h1>
+			<div class="input-wrapper">
+				<div class="input-group">
+					<input type="text" name="from-url">
+					<label>Team URL</label>
+				</div>
+			</div>
+
+			<div class="input-wrapper">
+				<div class="input-group">
+					<input type="text" name="from-email">
+					<label>Slack Account Email</label>
+				</div>
+			</div>
+
+			<div class="input-wrapper">
+				<div class="input-group">
+					<input type="password" name="from-password">
+					<label>Password</label>
+				</div>
+			</div>
+		</form>
+
+		<form id="destination" class="login-bubble">
+			<h1>Destination Account</h1>
+			<div class="input-wrapper">
+				<div class="input-group">
+					<input type="text" name="to-url">
+					<label>Team URL</label>
+				</div>
+			</div>
+
+			<div class="input-wrapper">
+				<div class="input-group">
+					<input type="text" name="to-email">
+					<label>Slack Account Email</label>
+				</div>
+			</div>
+
+			<div class="input-wrapper">
+				<div class="input-group">
+					<input type="password" name="to-password">
+					<label>Password</label>
+				</div>
+			</div>
+		</form>
+
+		<div>
+			<button id="login">Get Some Emoji 👍</button>
+		</div>
+
+		<div id="disclaimer" class="login-bubble">
+			If you don't want to log in with your Slack credentials here but do want to transfer emoji, I encourage you to check out the <a href="https://github.com/mootcycle/slackporter">source code</a> (it's short) and run a local copy. If you use this tool, you may receive emails from Slack that new API tokens have been issued for your account. This is normal.
+		</div>
+	</div>
+
+	<div id="emoji-list" class="hidden">
+	</div>
+
+	<div id="emoji-background">
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="static/dynamicthingie.js"></script>
+</body>
+</html>

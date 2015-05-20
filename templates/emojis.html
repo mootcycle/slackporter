@@ -1,0 +1,12 @@
+<ul>
+{{#each emoji}}
+	<li data-name="{{@key}}" data-url="{{this}}">
+		<img class="emoji" src="{{this}}" alt="{{@key}}">
+		<div>
+			<span class="emoji-name">:{{@key}}:</span>
+			<span class="emoji-name transferred hidden">DONE</span>
+		</div>
+	</li>
+{{/each}}
+</ul>
+<button>I'm Out 👌</button>

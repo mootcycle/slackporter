@@ -1,0 +1,21 @@
+{
+  "name": "emojiPorter",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.55.0",
+    "cheerio": "^0.19.0",
+    "q": "^1.2.0",
+    "hapi": "^8.4.0",
+    "handlebars": "^3.0.1",
+    "joi": "^6.2.0",
+    "boom": "^2.7.1",
+    "winston": "^1.0.0"
+  }
+}
