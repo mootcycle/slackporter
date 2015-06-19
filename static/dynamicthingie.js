@@ -55,6 +55,9 @@
         case 401:
           alert(error.responseJSON.message);
           break;
+        case 404:
+          alert(error.responseJSON.message);
+          break;
         case 429:
           alert('Too many requests.\nWait and try again.');
           break;

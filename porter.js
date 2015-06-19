@@ -35,6 +35,11 @@ function getLoginPage(options) {
   }, function(error, response, body) {
     if (error) {
       return deferred.reject(error);
+    } else if (response.statusCode == 404) {
+      var e = new Error('team page not found');
+      e.url = options.url;
+      e.statusCode = 404;
+      return deferred.reject(e);
     }
 
     var $ = cheerio.load(body);
@@ -82,6 +87,7 @@ function postLoginPage(options) {
       return deferred.reject(error);
     } else if (!options.jar.getCookies(options.url).length) {
       var e = new Error('invalid password');
+      e.statusCode = 401;
       e.url = options.url;
 
       return deferred.reject(e);

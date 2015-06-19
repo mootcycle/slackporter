@@ -64,7 +64,7 @@ server.route([{
   method: 'GET',
   path: '/',
   handler: function (request, reply) {
-    reply.view('index', { title: 'Poops' });
+    reply.view('index');
   }
 }, {
   method: 'GET',
@@ -115,8 +115,15 @@ server.route([{
       }
     }, function(error) {
       winston.error('emojilist all handler Error:\n' + util.inspect(error));
-      if (error && error.url) {
-        reply(Boom.unauthorized('Invalid password for ' + error.url));
+      if (error.statusCode) {
+        switch(error.statusCode) {
+          case 404:
+            reply(Boom.notFound('Team page not found for ' + error.url));
+            break;
+          case 401:
+            reply(Boom.unauthorized('Invalid password for ' + error.url));
+            break;
+        }
       } else {
         reply(Boom.badImplementation('Internal Server Error'));
       }
