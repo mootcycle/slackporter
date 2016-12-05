@@ -4,7 +4,7 @@ var Q = require('q');
 var cheerio = require('cheerio');
 var winston = require('winston');
 
-var webTokenUrl = 'https://api.slack.com/web';
+var webTokenUrl = 'https://api.slack.com/docs/oauth-test-tokens';
 var generateTokenUrl = 'https://api.slack.com/tokens';
 var emojiListUrl = 'https://slack.com/api/emoji.list';
 var emojiUploadFormPath = '/admin/emoji';
@@ -29,7 +29,10 @@ function getLoginPage(options) {
     url: options.url,
     jar: options.jar,
     headers: {
-      'X-Slack-Porter': '💖'
+      'X-Slack-Porter':'XX'
+    },
+    qs: {
+        no_sso:1
     },
     method: 'GET'
   }, function(error, response, body) {
@@ -65,21 +68,22 @@ function getLoginPage(options) {
 
 function postLoginPage(options) {
   var deferred = Q.defer();
+  options.formData.no_sso = 1;
 
   winston.info('postLoginPage for: ',
       options.info.remoteAddress,
       ' -- ',
-      options.url);
+      options.url, '--', options.formData);
 
   request({
     url: options.url,
     jar: options.jar,
     headers: {
-      'X-Slack-Porter': '💖'
+      'X-Slack-Porter':'XX'
     },
     method: 'POST',
     followAllRedirects: true,
-    formData: options.formData
+    form: options.formData
   }, function(error, response, body) {
     delete(options.formData);
 
@@ -96,10 +100,10 @@ function postLoginPage(options) {
     try {
       // This is a terrible hack and very brittle.
       var teamText = body.match(
-          /metaData\.team\W+=\W+(\{(([\w]+:"[^"]+"),*)+\});/)[1];
+          /.*boot_data\.incremental_boot_data\W+=\W+(\{.*\});/)[1];
 
-      options.team_id = teamText.match(/id:"(\w+?)"/)[1];
-      options.team_name = teamText.match(/name:"([\w\W]+?)"/)[1];
+      options.team_id = teamText.match(/"id":"(\w+?)"/)[1];
+      options.team_name = teamText.match(/"name":"([\w\W]+?)"/)[1];
 
       deferred.resolve(options);
     } catch(matchError) {
@@ -126,7 +130,7 @@ function getWebToken(options) {
     url: webTokenUrl,
     jar: options.jar,
     headers: {
-      'X-Slack-Porter': '💖'
+      'X-Slack-Porter':'XX'
     },
     method: 'GET'
   }, function(error, response, body) {
@@ -136,13 +140,7 @@ function getWebToken(options) {
 
     var $ = cheerio.load(body);
 
-    $('code').each(function() {
-      var token = $(this).text().match(/xoxp(-[0-9A-Za-z]+){4}/);
-      if (token) {
-        options.token = token[0];
-        return false;
-      }
-    });
+    options.token = $('#token-input-' + options.team_id).val();
 
     if (options.token) {
       deferred.resolve(options);
@@ -177,16 +175,16 @@ function generateWebToken(options) {
   winston.info('generateWebToken for: ',
       options.info.remoteAddress,
       ' -- ',
-      generateTokenUrl);
+      generateTokenUrl, '--', options.tokenFormData);
 
   request({
     url: generateTokenUrl,
     jar: options.jar,
     headers: {
-      'X-Slack-Porter': '💖'
+      'X-Slack-Porter':'XX'
     },
     method: 'POST',
-    formData: options.tokenFormData
+    form: options.tokenFormData
   }, function(error, response, body) {
     delete(options.tokenFormData);
     if (error) {
@@ -220,10 +218,10 @@ function fetchEmojiList(options) {
     url: emojiListUrl,
     jar: options.jar,
     headers: {
-      'X-Slack-Porter': '💖'
+      'X-Slack-Porter':'XX'
     },
     json: true,
-    formData: {
+    form: {
       token: options.token
     },
     method: 'POST'
@@ -265,7 +263,7 @@ function getEmojiUploadPage(options) {
     url: options.url + emojiUploadFormPath,
     jar: options.jar,
     headers: {
-      'X-Slack-Porter': '💖'
+      'X-Slack-Porter':'XX'
     },
     method: 'GET'
   }, function(error, response, body) {
@@ -302,7 +300,7 @@ function transferEmoji(toOptions, emojiName, emojiUrl) {
     method: 'POST',
     jar: toOptions.jar,
     headers: {
-      'X-Slack-Porter': '💖'
+      'X-Slack-Porter':'XX'
     },
     followAllRedirects: true
   }, function(error, response, body) {
