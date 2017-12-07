@@ -241,10 +241,6 @@ button:active {
 	position: absolute;
 }
 
-#disclaimer {
-	background-color: #244;
-}
-
 .pulsate {
 	animation: pulsate .3s ease-in-out infinite alternate;
 	transform-origin: center;
@@ -254,4 +250,7 @@ button:active {
 	to { transform: scale(1.05); }
 }
 
+#loginz input[type="textarea"] {
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}
 

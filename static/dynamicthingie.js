@@ -8,9 +8,8 @@
 
     userFrom = {
       url: $('#source input[name="from-url"]').val(),
-      email: $('#source input[name="from-email"]').val(),
-      password: $('#source input[name="from-password"]').val(),
-      token: $('#source input[name="from-token"]').val()
+      token: $('#source input[name="from-token"]').val(),
+      emojiJson: $('#source input[name="from-emoji-json"]').val()
     };
     userTo = {
       url: $('#destination input[name="to-url"]').val(),
@@ -87,7 +86,7 @@
 
   function saveSuccessfulLogin() {
     if (localStorage) {
-      $('input[type="text"], input[type="email"]').each(function() {
+      $('input.save-me, input.save-me').each(function() {
         localStorage.setItem('slack-porter-' + this.name, $(this).val());
       });
     }
@@ -117,12 +116,13 @@
         url:'/transferEmoji',
         method: 'post',
         timeout: 120000,
-        data: {
+        contentType: "application/json",
+        data: JSON.stringify({
           userFrom: userFrom,
           userTo: userTo,
           emojiName: emojiName,
           emojiUrl: emojiUrl
-        },
+        }),
       }).done(function(data) {
         $(this).removeClass('pulsate');
         $(this).addClass('disabled');
@@ -155,6 +155,8 @@
     $('#loginz').removeClass('loginz-collapse');
     $('#emoji-list').addClass('hidden');
     $('input[type="password"]').val('').each(checkInput);
+    $('input[name="to-token"]').val('').each(checkInput);
+    $('input[name="from-token"]').val('').each(checkInput);
   }
 
   function makeFloaters() {

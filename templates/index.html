@@ -11,36 +11,28 @@
 </head>
 <body>
 	<div id="title">Slack Emoji Porter 🍺</div>
-	<!-- Apologies if your browser/OS doesn't have emoji (unicode) support. -->
 
 	<div id="loginz">
 		<form id="source" class="login-bubble">
 			<h1>Source Account</h1>
 			<div class="input-wrapper">
 				<div class="input-group">
-					<input type="text" name="from-url">
+					<input type="text" name="from-url" class="save-me">
 					<label>Team URL</label>
 				</div>
 			</div>
 
 			<div class="input-wrapper">
 				<div class="input-group">
-					<input type="text" name="from-email">
-					<label>Slack Account Email</label>
-				</div>
-			</div>
-
-			<div class="input-wrapper">
-				<div class="input-group">
-					<input type="password" name="from-password">
-					<label>Password</label>
-				</div>
-			</div>
-
-			<div class="input-wrapper">
-				<div class="input-group">
 					<input type="text" name="from-token">
-					<label>Token</label>
+					<label>Slack Test Token (optional)</label>
+				</div>
+			</div>
+
+			<div class="input-wrapper">
+				<div class="input-group">
+					<input type="textarea" name="from-emoji-json">
+					<label>Raw JSON Response (optional)</label>
 				</div>
 			</div>
 		</form>
@@ -49,14 +41,14 @@
 			<h1>Destination Account</h1>
 			<div class="input-wrapper">
 				<div class="input-group">
-					<input type="text" name="to-url">
+					<input type="text" name="to-url" class="save-me">
 					<label>Team URL</label>
 				</div>
 			</div>
 
 			<div class="input-wrapper">
 				<div class="input-group">
-					<input type="text" name="to-email">
+					<input type="text" name="to-email" class="save-me">
 					<label>Slack Account Email</label>
 				</div>
 			</div>
@@ -71,17 +63,13 @@
 			<div class="input-wrapper">
 				<div class="input-group">
 					<input type="text" name="to-token">
-					<label>Token</label>
+					<label>Slack Test Token</label>
 				</div>
 			</div>
 		</form>
 
 		<div>
 			<button id="login">Get Some Emoji 👍</button>
-		</div>
-
-		<div id="disclaimer" class="login-bubble">
-			If you don't want to log in with your Slack credentials here but do want to copy emoji, I encourage you to check out the <a href="https://github.com/mootcycle/slackporter">source code</a> (it's short) and run a local copy. If you use this tool, you may receive emails from Slack that new API tokens have been issued for your account. This is normal.
 		</div>
 	</div>
 

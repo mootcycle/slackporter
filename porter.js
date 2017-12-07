@@ -3,11 +3,14 @@ var util = require('util');
 var Q = require('q');
 var cheerio = require('cheerio');
 var winston = require('winston');
+var Joi = require('Joi');
 
 var emojiListUrl = 'https://slack.com/api/emoji.list';
 var emojiUploadFormPath = '/admin/emoji';
 var emojiUploadImagePath = '/customize/emoji';
 
+var emojiJsonSchema = Joi.object().pattern(/.*/,
+  Joi.string().regex(/^(https:\/\/[^\.]+?\.slack-edge\.com.*|alias:)/));
 
 /**
  * Fetch the login page
@@ -103,29 +106,51 @@ function fetchEmojiList(options) {
       ' -- ',
       emojiListUrl);
 
-  request({
-    url: emojiListUrl,
-    jar: options.jar,
-    json: true,
-    formData: {
-      token: options.token
-    },
-    method: 'POST'
-  }, function(error, response, body) {
-    if (error || !body || !body.ok || !body.emoji) {
-      return deferred.reject(error);
-    }
-    for (var e in body.emoji) {
-      if (body.emoji[e].match(/^alias:/)) {
-        delete(body.emoji[e]);
-      }
+  if (options.emojiJson) {
+    try {
+      options.emojiJson = JSON.parse(options.emojiJson);
+    } catch(err) {
+      deferred.reject(new Error('error parsing emoji json'));
+      return deferred.promise;
     }
 
-    options.emoji = body.emoji;
-    deferred.resolve(options);
-  });
+    options.emoji = processEmoji(options.emojiJson.emoji || options.emojiJson);
+
+    if (emojiJsonSchema.validate(options.emoji).error) {
+      deferred.reject(new Error('invalid raw emoji json'));
+    } else {
+      deferred.resolve(options);
+    }
+  } else {
+    request({
+      url: emojiListUrl,
+      jar: options.jar,
+      json: true,
+      formData: {
+        token: options.token
+      },
+      method: 'POST'
+    }, function(error, response, body) {
+      if (error || !body || !body.ok || !body.emoji) {
+        return deferred.reject(error);
+      }
+
+      options.emoji = processEmoji(body.emoji);
+
+      deferred.resolve(options);
+    });
+  }
 
   return deferred.promise;
+}
+
+function processEmoji(json) {
+  for (var e in json) {
+    if (json[e].match(/^alias:/)) {
+      delete(json[e]);
+    }
+  }
+  return json;
 }
 
 /**

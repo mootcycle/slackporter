@@ -22,7 +22,13 @@ winston.add(winston.transports.File, {
 var server = new Hapi.Server();
 server.connection({ port: 2603, host: '127.0.0.1' });
 
-var userSchema = Joi.object().keys({
+var fromUserSchema = Joi.object().keys({
+  url: Joi.string().uri().regex(/^https:\/\/.*\.slack\.com\/?$/).required(),
+  token: Joi.string().allow(''),
+  emojiJson: Joi.string().allow('')
+});
+
+var toUserSchema = Joi.object().keys({
   url: Joi.string().uri().regex(/^https:\/\/.*\.slack\.com\/?$/).required(),
   email: Joi.string().email().required(),
   password: Joi.string().required(),
@@ -30,13 +36,13 @@ var userSchema = Joi.object().keys({
 });
 
 var loginSchema = Joi.object().keys({
-  userFrom: userSchema,
-  userTo: userSchema
+  userFrom: fromUserSchema,
+  userTo: toUserSchema
 });
 
 var transferSchema = Joi.object().keys({
-  userFrom: userSchema,
-  userTo: userSchema,
+  userFrom: fromUserSchema,
+  userTo: toUserSchema,
   emojiName: Joi.string().required(),
   emojiUrl: Joi.string().uri().required()
 });
@@ -103,9 +109,7 @@ server.route([{
     request.payload.userFrom.info = request.info;
     request.payload.userTo.info = request.info;
 
-    var fromPromise = porter.getLoginPage(request.payload.userFrom)
-      .then(porter.postLoginPage)
-      .then(porter.fetchEmojiList);
+    var fromPromise = porter.fetchEmojiList(request.payload.userFrom);
 
     var toPromise = porter.getLoginPage(request.payload.userTo)
       .then(porter.postLoginPage)
