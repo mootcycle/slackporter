@@ -9,12 +9,14 @@
     userFrom = {
       url: $('#source input[name="from-url"]').val(),
       email: $('#source input[name="from-email"]').val(),
-      password: $('#source input[name="from-password"]').val()
+      password: $('#source input[name="from-password"]').val(),
+      token: $('#source input[name="from-token"]').val()
     };
     userTo = {
       url: $('#destination input[name="to-url"]').val(),
       email: $('#destination input[name="to-email"]').val(),
-      password: $('#destination input[name="to-password"]').val()
+      password: $('#destination input[name="to-password"]').val(),
+      token: $('#destination input[name="to-token"]').val()
     };
 
     if (!userFrom.url.match(/^https:\/\/.*\.slack\.com\/?$/) ||
@@ -31,10 +33,11 @@
       url:'/emojilist',
       method: 'post',
       timeout: 120000,
-      data: {
+      contentType: "application/json",
+      data: JSON.stringify({
         userFrom: userFrom,
         userTo: userTo
-      },
+      }),
     }).done(function(data) {
       saveSuccessfulLogin();
       $('#emoji-list').html(data);

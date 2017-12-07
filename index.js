@@ -1,3 +1,4 @@
+var assert = require('assert');
 var path = require('path');
 var util = require('util');
 
@@ -24,7 +25,8 @@ server.connection({ port: 2603, host: '127.0.0.1' });
 var userSchema = Joi.object().keys({
   url: Joi.string().uri().regex(/^https:\/\/.*\.slack\.com\/?$/).required(),
   email: Joi.string().email().required(),
-  password: Joi.string().required()
+  password: Joi.string().required(),
+  token: Joi.string().required()
 });
 
 var loginSchema = Joi.object().keys({
@@ -42,37 +44,46 @@ var transferSchema = Joi.object().keys({
 
 // Just guessing at what reasonable rate limits should be.
 var rateLimiter = {};
-var MAX_REQUESTS = 4;
-var RATE_INTERVAL = 10000;
+var MAX_REQUESTS = 10;
+var RATE_INTERVAL = 2000;
 
 setInterval(function() {
   rateLimiter = {};
 }, RATE_INTERVAL);
 
-server.views({
-  engines: {
-    'html': {
-      module: require('handlebars'),
-      compileMode: 'sync'
-    }
-  },
-  compileMode: 'async',
-  path: path.join(__dirname, 'templates')
+server.register(require('vision'), function(err) {
+  assert(!err, err);
+
+  server.views({
+    engines: {
+      'html': {
+        module: require('handlebars'),
+        compileMode: 'sync'
+      }
+    },
+    compileMode: 'async',
+    path: path.join(__dirname, 'templates')
+  });
 });
+
+server.register(require('inert'), function(err) {
+  server.route([{
+    method: 'GET',
+    path: '/static/{param*}',
+    handler: {
+      directory: {
+        path: 'static'
+      }
+    }
+  }]);
+});
+
 
 server.route([{
   method: 'GET',
   path: '/',
   handler: function (request, reply) {
     reply.view('index');
-  }
-}, {
-  method: 'GET',
-  path: '/static/{param*}',
-  handler: {
-    directory: {
-      path: 'static'
-    }
   }
 }, {
   method: 'POST',
@@ -94,12 +105,10 @@ server.route([{
 
     var fromPromise = porter.getLoginPage(request.payload.userFrom)
       .then(porter.postLoginPage)
-      .then(porter.getWebToken)
       .then(porter.fetchEmojiList);
 
     var toPromise = porter.getLoginPage(request.payload.userTo)
       .then(porter.postLoginPage)
-      .then(porter.getWebToken)
       .then(porter.fetchEmojiList);
 
     Q.all([fromPromise, toPromise])
