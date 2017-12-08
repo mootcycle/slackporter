@@ -106,6 +106,14 @@ server.route([{
       return reply(Boom.tooManyRequests('too many requests'));
     }
 
+    var userFrom  = request.payload.userFrom;
+    var userTo = request.payload.userTo;
+
+    if (!userFrom.token || !userFrom.emojiJson) {
+      return reply(
+        Boom.badRequest('You must enter either a token or a JSON response.'));
+    } 
+
     request.payload.userFrom.info = request.info;
     request.payload.userTo.info = request.info;
 

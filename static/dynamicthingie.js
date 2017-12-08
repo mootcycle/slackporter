@@ -51,8 +51,12 @@
 
       switch(error.status) {
         case 400:
-          alert('These form fields are invalid:\n' +
-            error.responseJSON.validation.keys.join(', '));
+          if (error.responseJSON.validation) {
+            alert('These form fields are invalid:\n' +
+              error.responseJSON.validation.keys.join(', '));
+          } else {
+            alert(error.responseJSON.message);
+          }
           break;
         case 401:
           alert(error.responseJSON.message);
