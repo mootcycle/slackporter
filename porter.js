@@ -214,7 +214,7 @@ function transferEmoji(toOptions, emojiName, emojiUrl) {
   var form = r.form();
 
   form.append('add', '1');
-  form.append('crumb', toOptions.uploadCrumb);
+  form.append('token', toOptions.token);
   form.append('name', emojiName);
   form.append('mode', 'data');
   form.append('img', request(emojiUrl));
